@@ -4,6 +4,6 @@ namespace RestaurantAPI.Services
 {
     public interface IWeatherForecastService
     {
-        IEnumerable<WeatherForecast> Get();
+        IEnumerable<WeatherForecast> Get(int take, int max, int min);
     }
 }

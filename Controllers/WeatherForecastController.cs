@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using RestaurantAPI.Services;
+using RestaurantAPI.Dtos;
 
 namespace RestaurantAPI.Controllers
 {
@@ -21,10 +22,13 @@ namespace RestaurantAPI.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpPost("generate")]
+        public IActionResult Generate([FromQuery]int take, [FromBody]TemperatureParametersDto parameters)
         {
-           return _service.Get();
+            if (take <= 0 || parameters.Min > parameters.Max) return BadRequest();
+
+            var result = _service.Get(take, parameters.Max, parameters.Min);
+            return Ok(result);
         }
     }
 }
