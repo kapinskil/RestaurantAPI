@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using RestaurantAPI.Entities;
 using AutoMapper;
+using RestaurantAPI.Services;
 
 namespace RestaurantAPI
 {
@@ -31,6 +32,7 @@ namespace RestaurantAPI
             services.AddDbContext<RestaurantDbContext>();
             services.AddScoped<RestaurantSeeder>();
             services.AddAutoMapper(this.GetType().Assembly);
+            services.AddScoped<IRestaurantService, RestaurantService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
