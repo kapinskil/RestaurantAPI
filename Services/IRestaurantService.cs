@@ -8,5 +8,6 @@ namespace RestaurantAPI.Services
         int Create(CreateRestaurantDto dto);
         RestaurantDto GetById(int id);
         IEnumerable<RestaurantDto> GetAll();
+        bool Delete(int id);
     }
 }
