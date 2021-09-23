@@ -43,7 +43,6 @@ namespace RestaurantAPI.Controllers
 
         }
 
-
         [HttpPost]
         public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
         {
@@ -68,6 +67,25 @@ namespace RestaurantAPI.Controllers
             }
 
             return Ok(restaurant);
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult UpdateRestaurant([FromBody] UpdateRestaurantDto dto, [FromRoute] int id) 
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+            var isUpdated =  _restaurantService.Update(dto, id);
+
+            if(!isUpdated)
+            {
+                NotFound();
+            }
+
+            return Ok();
         }
     }
 }

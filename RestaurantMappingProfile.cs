@@ -24,6 +24,8 @@ namespace RestaurantAPI
                 .ForMember(r => r.Address,
                 c => c.MapFrom(restaurant =>
                                 new Address() { City = restaurant.City, PostCode = restaurant.PostCode, Street = restaurant.Street }));
+
+            CreateMap<UpdateRestaurantDto, Restaurant>();
         }   
     }
 }
