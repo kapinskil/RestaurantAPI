@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using RestaurantAPI.Entities;
 using AutoMapper;
 using RestaurantAPI.Services;
+using RestaurantAPI.Middleware;
 
 namespace RestaurantAPI
 {
@@ -33,6 +34,7 @@ namespace RestaurantAPI
             services.AddScoped<RestaurantSeeder>();
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IRestaurantService, RestaurantService>();
+            services.AddScoped<ErrorHendlingMiddleware>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,7 +45,7 @@ namespace RestaurantAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseMiddleware<ErrorHendlingMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseRouting();

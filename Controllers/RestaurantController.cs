@@ -8,10 +8,12 @@ using RestaurantAPI.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Services;
+using NLog;
 
 namespace RestaurantAPI.Controllers
 {
     [Route("api/restaurant")]
+    [ApiController]
     public class RestaurantController : ControllerBase
     {
         private readonly IRestaurantService _restaurantService;
@@ -32,24 +34,13 @@ namespace RestaurantAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-            var isDelete = _restaurantService.Delete(id);
-
-            if(isDelete)
-            {
-                return NoContent();
-            }
-
-            return NotFound();
-
+            _restaurantService.Delete(id);
+            return NoContent();
         }
 
         [HttpPost]
         public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             var id = _restaurantService.Create(dto);
 
@@ -61,29 +52,13 @@ namespace RestaurantAPI.Controllers
         {
             var restaurant = _restaurantService.GetById(id);
 
-            if (restaurant is null)
-            {
-                return NotFound();
-            }
-
             return Ok(restaurant);
         }
 
         [HttpPut("{id}")]
         public ActionResult UpdateRestaurant([FromBody] UpdateRestaurantDto dto, [FromRoute] int id) 
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-
-            var isUpdated =  _restaurantService.Update(dto, id);
-
-            if(!isUpdated)
-            {
-                NotFound();
-            }
+            _restaurantService.Update(dto, id);
 
             return Ok();
         }
