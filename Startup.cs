@@ -13,6 +13,8 @@ using RestaurantAPI.Models;
 using RestaurantAPI.Models.Validertors;
 using RestaurantAPI.Services;
 using System.Text;
+using RestaurantAPI.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestaurantAPI
 {
@@ -50,6 +52,14 @@ namespace RestaurantAPI
                 };
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("HasNatilonality", builder => builder.RequireClaim("Nationality"));
+                options.AddPolicy("Atlast20", builder => builder.AddRequirements(new MinimumRangeRequrment(20)));
+            });
+
+            services.AddScoped<IAuthorizationHandler, MinimumRangeRequrmentHandler>();
+            services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHendler>();
             services.AddControllers().AddFluentValidation();
             services.AddDbContext<RestaurantDbContext>();
             services.AddScoped<RestaurantSeeder>();
@@ -84,7 +94,7 @@ namespace RestaurantAPI
             });
 
             app.UseRouting();
-
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

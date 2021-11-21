@@ -29,7 +29,7 @@ namespace RestaurantAPI.Controllers
 
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginUserDto dto)
-        {
+        { 
             var token = _accountService.GenerateJwt(dto);
             return Ok(token);
         }
